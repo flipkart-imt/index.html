@@ -1,1 +1,1098 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <meta name="theme-color" content="#2874f0">
+
+  <title>HYPERLOCAL IMT</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     APP HEADER
+===================================================== -->
+
+<header class="header">
+
+  <div class="header-left">
+
+    <div class="logo-box">
+      IMT
+    </div>
+
+    <div class="header-title">
+      <h1>HYPERLOCAL IMT</h1>
+      <span>Inventory Management Tracker</span>
+    </div>
+
+  </div>
+
+  <div class="header-right">
+
+    <span id="deviceType" class="device-badge">
+      Device
+    </span>
+
+    <span id="userBadge" class="user-badge">
+      Guest
+    </span>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<main id="loginPage" class="page">
+
+  <div class="login-container">
+
+    <div class="login-brand">
+
+      <div class="big-logo">
+        IMT
+      </div>
+
+      <h2>HYPERLOCAL IMT</h2>
+
+      <p>
+        Daily Inventory & Issue Management
+      </p>
+
+    </div>
+
+
+    <!-- LOGIN SWITCH -->
+
+    <div class="login-switch">
+
+      <button
+        id="userLoginTab"
+        class="switch-btn active"
+        onclick="changeLoginType('user')"
+      >
+        Casper Login
+      </button>
+
+      <button
+        id="adminLoginTab"
+        class="switch-btn"
+        onclick="changeLoginType('admin')"
+      >
+        Admin
+      </button>
+
+    </div>
+
+
+    <!-- USER LOGIN -->
+
+    <div id="userLoginBox">
+
+      <div class="form-group">
+
+        <label>Casper ID</label>
+
+        <input
+          id="loginCasper"
+          type="text"
+          placeholder="Enter Casper ID"
+          autocomplete="username"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Password</label>
+
+        <div class="password-field">
+
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+          >
+
+          <button
+            type="button"
+            onclick="togglePassword('loginPassword')"
+          >
+            👁
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="primary-btn full-btn"
+        onclick="loginUser()"
+      >
+        LOGIN
+      </button>
+
+    </div>
+
+
+    <!-- ADMIN LOGIN -->
+
+    <div
+      id="adminLoginBox"
+      class="hidden"
+    >
+
+      <div class="form-group">
+
+        <label>Admin Name</label>
+
+        <input
+          id="adminName"
+          type="text"
+          placeholder="Enter admin name"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Password</label>
+
+        <div class="password-field">
+
+          <input
+            id="adminPassword"
+            type="password"
+            placeholder="Enter admin password"
+          >
+
+          <button
+            type="button"
+            onclick="togglePassword('adminPassword')"
+          >
+            👁
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="primary-btn full-btn"
+        onclick="loginAdmin()"
+      >
+        ADMIN LOGIN
+      </button>
+
+    </div>
+
+
+    <div
+      id="loginError"
+      class="error-message"
+    ></div>
+
+
+    <div class="login-footer">
+
+      <span>
+        Created by <b>Nilkantha</b>
+      </span>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     USER APPLICATION
+===================================================== -->
+
+<main
+  id="userPage"
+  class="page hidden"
+>
+
+
+  <!-- USER TOP BAR -->
+
+  <section class="welcome-card">
+
+    <div>
+
+      <small>Welcome</small>
+
+      <h2 id="loggedUserName">
+        Employee
+      </h2>
+
+      <p id="loggedUserInfo">
+        Casper ID
+      </p>
+
+    </div>
+
+
+    <button
+      class="logout-btn"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       SEARCH
+  ==================================================== -->
+
+  <section class="card">
+
+    <div class="section-heading">
+
+      <div>
+
+        <h3>Product Search</h3>
+
+        <span>
+          Search using WID / FSN
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+      <input
+        id="widSearch"
+        type="text"
+        placeholder="Enter WID / FSN"
+        autocomplete="off"
+      >
+
+      <button
+        class="search-btn"
+        onclick="searchProduct()"
+      >
+        🔍 Search
+      </button>
+
+    </div>
+
+
+    <div
+      id="searchResultMessage"
+      class="info-message"
+    ></div>
+
+
+    <!-- LOCATION RESULT -->
+
+    <div
+      id="locationSelection"
+      class="hidden"
+    >
+
+      <div class="sub-heading">
+
+        <h4>
+          Available Locations
+        </h4>
+
+        <span id="locationCount">
+          0 locations
+        </span>
+
+      </div>
+
+
+      <div
+        id="locationCards"
+        class="location-cards"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       PRODUCT DETAILS
+  ==================================================== -->
+
+  <section
+    id="productDetailsCard"
+    class="card hidden"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h3>Product Details</h3>
+
+        <span>
+          Selected inventory
+        </span>
+
+      </div>
+
+      <span class="status-pill">
+        SELECTED
+      </span>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+      <div class="product-item">
+
+        <label>WID / FSN</label>
+
+        <strong id="detailWid">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="product-item">
+
+        <label>Product Name</label>
+
+        <strong id="detailProduct">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="product-item">
+
+        <label>Location</label>
+
+        <strong id="detailLocation">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="product-item">
+
+        <label>Dim Category</label>
+
+        <strong id="detailDim">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="product-item">
+
+        <label>CMS Vertical</label>
+
+        <strong id="detailVertical">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="product-item">
+
+        <label>System Quantity</label>
+
+        <strong id="detailSystemQty">
+          -
+        </strong>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       QUANTITY / MRP
+  ==================================================== -->
+
+  <section
+    id="quantityCard"
+    class="card hidden"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h3>Issue Quantity</h3>
+
+        <span>
+          Enter actual quantity and MRP
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="input-grid">
+
+
+      <div class="form-group">
+
+        <label>Quantity</label>
+
+        <input
+          id="issueQuantity"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="Enter quantity"
+          oninput="calculateValue()"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>MRP</label>
+
+        <input
+          id="issueMrp"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Enter MRP"
+          oninput="calculateValue()"
+        >
+
+      </div>
+
+
+      <div class="value-card">
+
+        <span>Total Value</span>
+
+        <strong id="issueValue">
+          ₹0.00
+        </strong>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       ISSUE TYPE
+  ==================================================== -->
+
+  <section
+    id="issueCard"
+    class="card hidden"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h3>Issue Type</h3>
+
+        <span>
+          Select one issue
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="issue-grid">
+
+
+      <button
+        class="issue-btn"
+        data-issue="Damage"
+        onclick="selectIssue(this)"
+      >
+        <span>⚠️</span>
+        <b>Damage</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Expiry"
+        onclick="selectIssue(this)"
+      >
+        <span>📅</span>
+        <b>Expiry</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Near Expiry"
+        onclick="selectIssue(this)"
+      >
+        <span>⏳</span>
+        <b>Near Expiry</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Pilferage"
+        onclick="selectIssue(this)"
+      >
+        <span>🔎</span>
+        <b>Pilferage</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Rat/Cat Damage"
+        onclick="selectIssue(this)"
+      >
+        <span>🐾</span>
+        <b>Rat/Cat Damage</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Leakage"
+        onclick="selectIssue(this)"
+      >
+        <span>💧</span>
+        <b>Leakage</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Broken"
+        onclick="selectIssue(this)"
+      >
+        <span>📦</span>
+        <b>Broken</b>
+      </button>
+
+
+      <button
+        class="issue-btn"
+        data-issue="Other"
+        onclick="selectIssue(this)"
+      >
+        <span>✏️</span>
+        <b>Other</b>
+      </button>
+
+
+    </div>
+
+
+    <!-- OTHER -->
+
+    <div
+      id="otherIssueBox"
+      class="form-group hidden"
+    >
+
+      <label>
+        Specify Other Issue
+      </label>
+
+      <input
+        id="otherIssueText"
+        type="text"
+        placeholder="Enter issue"
+      >
+
+    </div>
+
+
+    <div
+      id="selectedIssueBox"
+      class="selected-box hidden"
+    >
+
+      Selected Issue:
+
+      <strong id="selectedIssueText">
+        -
+      </strong>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       REMARKS
+  ==================================================== -->
+
+  <section
+    id="remarksCard"
+    class="card hidden"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h3>Remarks</h3>
+
+        <span>
+          Add additional information
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <textarea
+      id="remarksText"
+      rows="4"
+      placeholder="Enter remarks..."
+    ></textarea>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       CONFIRM / SUBMIT
+  ==================================================== -->
+
+  <section
+    id="submitCard"
+    class="card submit-card hidden"
+  >
+
+
+    <label class="confirmation">
+
+      <input
+        id="confirmSubmit"
+        type="checkbox"
+      >
+
+      <span>
+        I confirm that all details are correct.
+      </span>
+
+    </label>
+
+
+    <div
+      id="submitMessage"
+      class="info-message"
+    ></div>
+
+
+    <button
+      id="submitIssueBtn"
+      class="submit-btn"
+      onclick="submitIssue()"
+    >
+      SUBMIT ISSUE
+    </button>
+
+
+  </section>
+
+
+  <footer class="app-footer">
+    HYPERLOCAL IMT • Created by Nilkantha
+  </footer>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     ADMIN APPLICATION
+===================================================== -->
+
+<main
+  id="adminPage"
+  class="page hidden"
+>
+
+
+  <!-- ADMIN HEADER -->
+
+  <section class="admin-header">
+
+    <div>
+
+      <small>ADMIN PANEL</small>
+
+      <h2>
+        HYPERLOCAL IMT
+      </h2>
+
+      <p>
+        Logged in as Nilkantha
+      </p>
+
+    </div>
+
+
+    <button
+      class="logout-btn"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </section>
+
+
+
+  <!-- ADMIN NAVIGATION -->
+
+  <nav class="admin-navigation">
+
+
+    <button
+      class="admin-tab active"
+      onclick="openAdminTab('dashboard', this)"
+    >
+      📊 Dashboard
+    </button>
+
+
+    <button
+      class="admin-tab"
+      onclick="openAdminTab('records', this)"
+    >
+      📋 Records
+    </button>
+
+
+    <button
+      class="admin-tab"
+      onclick="openAdminTab('online', this)"
+    >
+      🟢 Online
+    </button>
+
+
+    <button
+      class="admin-tab"
+      onclick="openAdminTab('reports', this)"
+    >
+      📈 Reports
+    </button>
+
+
+  </nav>
+
+
+
+  <!-- ===================================================
+       ADMIN DASHBOARD
+  ==================================================== -->
+
+  <section
+    id="adminDashboard"
+    class="admin-content"
+  >
+
+
+    <div class="dashboard-grid">
+
+
+      <div class="dashboard-stat">
+
+        <span>Total Records</span>
+
+        <strong id="statRecords">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>Total Quantity</span>
+
+        <strong id="statQuantity">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>Total Value</span>
+
+        <strong id="statValue">
+          ₹0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <span>Today's Records</span>
+
+        <strong id="statToday">
+          0
+        </strong>
+
+      </div>
+
+
+    </div>
+
+
+    <section class="card">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h3>
+            Issue Summary
+          </h3>
+
+          <span>
+            Overall issue count
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="adminIssueSummary"
+        class="summary-grid"
+      ></div>
+
+
+    </section>
+
+
+  </section>
+
+
+
+  <!-- ===================================================
+       ADMIN RECORDS
+  ==================================================== -->
+
+  <section
+    id="adminRecords"
+    class="admin-content hidden"
+  >
+
+    <section class="card">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h3>
+            Issue Records
+          </h3>
+
+          <span>
+            All submitted records
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <input
+        id="adminSearch"
+        class="admin-search"
+        type="text"
+        placeholder="Search WID / Location / Casper ID / Issue..."
+        oninput="filterAdminRecords()"
+      >
+
+
+      <div
+        id="adminRecordsTable"
+        class="records-container"
+      ></div>
+
+
+    </section>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       ONLINE USERS
+  ==================================================== -->
+
+  <section
+    id="adminOnline"
+    class="admin-content hidden"
+  >
+
+    <section class="card">
+
+
+      <div class="online-header">
+
+        <div>
+
+          <h3>
+            Currently Online
+          </h3>
+
+          <span>
+            Active Casper IDs
+          </span>
+
+        </div>
+
+
+        <div
+          id="onlineUserCount"
+          class="online-count"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div
+        id="onlineUsers"
+        class="online-users"
+      ></div>
+
+
+    </section>
+
+  </section>
+
+
+
+  <!-- ===================================================
+       REPORTS
+  ==================================================== -->
+
+  <section
+    id="adminReports"
+    class="admin-content hidden"
+  >
+
+    <section class="card">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h3>
+            Issue Reports
+          </h3>
+
+          <span>
+            Issue-wise quantity
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="reportCards"
+        class="report-grid"
+      ></div>
+
+
+    </section>
+
+  </section>
+
+
+  <footer class="app-footer">
+    HYPERLOCAL IMT • Created by Nilkantha
+  </footer>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+  id="loadingScreen"
+  class="loading-screen hidden"
+>
+
+  <div class="loading-box">
+
+    <div class="spinner"></div>
+
+    <strong>
+      Please wait...
+    </strong>
+
+  </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
+```
